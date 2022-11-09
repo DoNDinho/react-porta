@@ -7,6 +7,7 @@ const Report = () => {
   return (
     <div style={{ marginTop: 30 }}>
       <GananciasAnuales />
+      <hr />
       <GananciasMensuales/>
     </div>
   )

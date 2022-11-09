@@ -34,7 +34,7 @@ const GananciasAnuales = () => {
 
   useEffect( () =>{
     procesarReporte()
-  }, [dataChart.labels[0]])
+  }, [dataChart.labels[0], totalAnual])
 
   const procesarReporte = async(e) => {
     e?.preventDefault()
