@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-export async function obtenerGananciasMensuales(body) {
+export async function obtenerGananciasAnuales(body) {
   try {
-    const url = 'https://siglo-xxi-reports.azurewebsites.net/Reports/v1/earnings/monthly'
+    const url = 'https://siglo-xxi-reports.azurewebsites.net/Reports/v1/earnings/annual'
     const headers = { 'Content-Type': 'application/json' }
     const { data } = await axios.post(url, body, { headers })
     return data
