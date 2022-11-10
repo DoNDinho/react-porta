@@ -1,14 +1,14 @@
 import React from 'react'
-import GananciasAnuales from './reports/GananciasAnuales'
-import GananciasMensuales from './reports/GananciasMensuales'
+import VentasAnuales from './reports/VentasAnuales'
+import VentasMensuales from './reports/VentasMensuales'
 
 const Report = () => {
  
   return (
     <div style={{ marginTop: 30 }}>
-      <GananciasAnuales />
+      <VentasAnuales />
       <hr />
-      <GananciasMensuales/>
+      <VentasMensuales/>
     </div>
   )
 }

@@ -6,8 +6,8 @@ import TextField from '@mui/material/TextField'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { obtenerGananciasAnuales } from '../../api/gananciasAnuales'
-import { requestGananciasAnuales } from '../../converters/gananciasAnuales'
+import { obtenerVentasAnuales } from '../../api/ventasAnuales'
+import { requestVentasAnuales } from '../../converters/ventasAnuales'
 import LineChart from './LineChart'
 
 const chartOptions = {
@@ -15,7 +15,7 @@ const chartOptions = {
   datasets: [
     {
       fill: true,
-      label: 'Ganancias mensuales',
+      label: 'Ventas mensuales',
       data: [],
       borderColor: 'rgb(53, 162, 235)',
       backgroundColor: 'rgba(53, 162, 235, 0.5)'
@@ -23,14 +23,15 @@ const chartOptions = {
   ]
 }
 
+const defaultDatosAnuales = [
+  { mes: '', montoTotal: 0 }
+]
+
 const GananciasAnuales = () => {
   const [date, setDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'))
   const [dataChart, setDataChart] = useState(chartOptions)
   const [totalAnual, setTotalAnual] = useState(0)
-  const [datosAnuales, setDatosAnuales] = useState([{
-    mes: '',
-    montoTotal: 0
-  }])
+  const [datosAnuales, setDatosAnuales] = useState(defaultDatosAnuales)
 
   useEffect( () =>{
     procesarReporte()
@@ -38,18 +39,23 @@ const GananciasAnuales = () => {
 
   const procesarReporte = async(e) => {
     e?.preventDefault()
-    await callApiGananciasAnuales()
+    await callApiVentasAnuales()
     loadDataChart()
   }
 
-  const callApiGananciasAnuales = async () => {
-    const body = requestGananciasAnuales(date)
-    const {annual_sales} = await obtenerGananciasAnuales(body)
+  const callApiVentasAnuales = async () => {
+    const body = requestVentasAnuales(date)
+    const {annual_sales} = await obtenerVentasAnuales(body)
+    if(!annual_sales.details) {
+      setTotalAnual(0)
+      setDatosAnuales(defaultDatosAnuales)
+      return
+    }
     const datos = annual_sales.details.map(detail => {
       return {mes: detail.month, montoTotal: detail.amount.total_amount}
     })
     setTotalAnual(annual_sales.amount)
-    setDatosAnuales(datos)    
+    setDatosAnuales(datos)
   }
 
   const loadDataChart = () => {
@@ -89,7 +95,7 @@ const GananciasAnuales = () => {
       </form>
 
       <div style={{ width: 700, margin: 'auto' }}>
-        <LineChart chartData={dataChart} title={`Total ganancias anuales $${totalAnual}`} />
+        <LineChart chartData={dataChart} title={`Total ventas anuales $${totalAnual}`} />
       </div>
     </div>
   )

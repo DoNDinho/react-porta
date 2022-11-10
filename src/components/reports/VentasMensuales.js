@@ -7,15 +7,15 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import LineChart from './LineChart'
-import { requestGananciasMensuales } from '../../converters/gananciasMensuales'
-import { obtenerGananciasMensuales } from '../../api/gananciasMensuales'
+import { requestVentasMensuales } from '../../converters/ventasMensuales'
+import { obtenerVentasMensuales } from '../../api/ventasMensuales'
 
 const chartOptions = {
   labels: [],
   datasets: [
     {
       fill: true,
-      label: 'Ganancias diarias',
+      label: 'Ventas diarias',
       data: [],
       borderColor: 'rgb(53, 162, 235)',
       backgroundColor: 'rgba(53, 162, 235, 0.5)'
@@ -23,14 +23,15 @@ const chartOptions = {
   ]
 }
 
+const defaultDatosMensuales = [
+  { fecha: '', montoTotal: 0 }
+]
+
 const GananciasMensuales = () => {
   const [date, setDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'))
   const [dataChart, setDataChart] = useState(chartOptions)
   const [totalMensual, setTotalMensual] = useState(0)
-  const [datosMensuales, setDatosMensuales] = useState([{
-    fecha: '',
-    montoTotal: 0
-  }])
+  const [datosMensuales, setDatosMensuales] = useState(defaultDatosMensuales)
 
   useEffect( () =>{
     procesarReporte()
@@ -38,13 +39,18 @@ const GananciasMensuales = () => {
 
   const procesarReporte = async(e) => {
     e?.preventDefault()
-    await callApiGananciasMensuales()
+    await callApiVentasMensuales()
     loadDataChart()
   }
 
-  const callApiGananciasMensuales = async () => {
-    const body = requestGananciasMensuales(date)
-    const {monthly_sales} = await obtenerGananciasMensuales(body)
+  const callApiVentasMensuales = async () => {
+    const body = requestVentasMensuales(date)
+    const {monthly_sales} = await obtenerVentasMensuales(body)
+    if(!monthly_sales.details) {
+      setTotalMensual(0)
+      setDatosMensuales(defaultDatosMensuales)
+      return
+    }
     const datos = monthly_sales.details.map(detail => {
       return {fecha: detail.date, montoTotal: detail.amount.total_amount}
     })
@@ -92,7 +98,7 @@ const GananciasMensuales = () => {
       </form>
 
       <div style={{ width: 700, margin: 'auto' }}>
-        <LineChart chartData={dataChart} title={`Total ganancias mensual $${totalMensual}`} />
+        <LineChart chartData={dataChart} title={`Total ventas mensual $${totalMensual}`} />
       </div>
     </div>
   )
