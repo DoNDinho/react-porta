@@ -15,7 +15,7 @@ export const chartOptions = {
   labels: [],
   datasets: [
     {
-      label: 'of Votes',
+      label: '# of Votes',
       data: [],
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',

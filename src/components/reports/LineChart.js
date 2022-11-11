@@ -28,7 +28,13 @@ function LineChart({ chartData, title }) {
     responsive: true,
     plugins: {
       legend: { position: 'top' },
-      title: { display: true, text: title }
+      title: { display: true, text: title },
+      datalabels: {
+        color: 'blue',
+        anchor: 'end',
+        align: 'top',
+        display: false
+      }
     }
   }
 
