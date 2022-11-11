@@ -24,6 +24,10 @@ export const chartOptions = {
         'rgba(75, 192, 192, 0.2)',
         'rgba(153, 102, 255, 0.2)',
         'rgba(255, 159, 64, 0.2)',
+        'rgba(200, 60, 132, 0.2)',
+        'rgba(170, 162, 235, 0.2)',
+        'rgba(90, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
       ],
       borderColor: [
         'rgba(255, 99, 132, 1)',
@@ -32,6 +36,10 @@ export const chartOptions = {
         'rgba(75, 192, 192, 1)',
         'rgba(153, 102, 255, 1)',
         'rgba(255, 159, 64, 1)',
+        'rgba(200, 60, 132, 1)',
+        'rgba(170, 162, 235, 1)',
+        'rgba(90, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)'
       ],
       borderWidth: 1,
     },
@@ -42,11 +50,10 @@ const defaultMasVendidos = [
   { menu: '', cantidad: 0 }
 ]
 
-// TODO continua en este componente
-// TODO crear estado para guardar categoria
 const PlatosMasVendidos = () => {
   const [date, setDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'))
   const [categorias, setCategorias] = useState([{ code: 0, name: '' }])
+  const [idCategoria, setIdCategoria] = useState(1)
   const [dataChart, setDataChart] = useState(chartOptions)
   const [mes, setMes] = useState('')
   const [platosVendidos, setPlatosVendidos] = useState(defaultMasVendidos)
@@ -54,21 +61,21 @@ const PlatosMasVendidos = () => {
   useEffect( () =>{
     callApiListarCategorias()
     procesarReporte()
-  }, [dataChart.labels[0], mes])
+  }, [dataChart.labels[0], mes, idCategoria])
 
   const callApiListarCategorias = async () => {
     const { categories } = await listarCategorias()
     setCategorias(categories)
   }
-
+  
   const procesarReporte = async (e) => {
     e?.preventDefault()
     await callApiPlatosMasVendidos()
     loadDataChart()
   }
-
+  
   const callApiPlatosMasVendidos = async () => {
-    const dataBody = { date: date, categoryCode: 1 }
+    const dataBody = { date: date, categoryCode: idCategoria }
     const body = requestPlatosVendidos(dataBody)
     const { best_seller_menu } = await obtenerPlatosMasVendidos(body, null)
     if(!best_seller_menu.details) {
@@ -94,11 +101,15 @@ const PlatosMasVendidos = () => {
     setDataChart({labels: platos, datasets:[{...dataChart.datasets[0], data}]})
   }
 
+  const changeSelect = (e) => {
+    setIdCategoria(+e.target.value)
+  }
+
   return (
     <div style={{ marginTop: 30 }}>
       <form style={{ width: 700, margin: 'auto' }}>
-        <select>
-          {categorias.map(categoria => <option value={categoria.code}>{categoria.name}</option>)}
+        <select onChange={changeSelect} style={{marginLeft: 50}}>
+          {categorias.map(categoria => <option value={categoria.code} title={categoria.name}>{categoria.name}</option>)}
         </select>
 
           <LocalizationProvider dateAdapter={AdapterDayjs} >
@@ -123,8 +134,8 @@ const PlatosMasVendidos = () => {
         />
       </form>
 
-      <div style={{ width: 700, margin: 'auto', marginTop: 30 }}>
-        <PieChart chartData={dataChart} title={`Platos más vendidos en el mes ${mes}`} />
+      <div style={{ width: 500, margin: 'auto', marginTop: 30 }}>
+        <PieChart chartData={dataChart} title={`Más vendidos en el mes de ${mes}`} />
       </div>
     </div>
     
