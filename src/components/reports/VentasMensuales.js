@@ -74,12 +74,10 @@ const GananciasMensuales = () => {
   return (
     <div style={{ marginTop: 30 }}>
       <form style={{ width: 700, margin: 'auto' }}>
-        <label>
-          Selecciona mes:
           <LocalizationProvider dateAdapter={AdapterDayjs} >
             <DatePicker
               views={['year', 'month']}
-              // label='Year and Month'
+              label='Seleccione mes y año'
               minDate={dayjs('2012-03-01')}
               maxDate={dayjs('2030-06-01')}
               value={date}
@@ -89,7 +87,6 @@ const GananciasMensuales = () => {
               renderInput={(params) => <TextField {...params} helperText={null} />}
             />
           </LocalizationProvider>
-        </label>
 
         <input
           type='submit'
@@ -99,7 +96,7 @@ const GananciasMensuales = () => {
         />
       </form>
 
-      <div style={{ width: 700, margin: 'auto' }}>
+      <div style={{ width: 700, margin: 'auto', marginTop: 30 }}>
         <LineChart chartData={dataChart} title={`Total ventas mensual $${totalMensual}`} />
       </div>
     </div>

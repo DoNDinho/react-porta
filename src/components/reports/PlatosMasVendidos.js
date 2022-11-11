@@ -9,13 +9,14 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { requestPlatosVendidos } from '../../converters/platosVendidos'
 import { obtenerPlatosMasVendidos } from '../../api/platosMasVendidos'
 import { PieChart } from './PieChart'
+import { listarCategorias } from '../../api/listarCategorias'
 
 export const chartOptions = {
-  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  labels: [],
   datasets: [
     {
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3],
+      label: 'of Votes',
+      data: [],
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(54, 162, 235, 0.2)',
@@ -42,11 +43,23 @@ const defaultMasVendidos = [
 ]
 
 // TODO continua en este componente
+// TODO crear estado para guardar categoria
 const PlatosMasVendidos = () => {
   const [date, setDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'))
+  const [categorias, setCategorias] = useState([{ code: 0, name: '' }])
   const [dataChart, setDataChart] = useState(chartOptions)
   const [mes, setMes] = useState('')
   const [platosVendidos, setPlatosVendidos] = useState(defaultMasVendidos)
+
+  useEffect( () =>{
+    callApiListarCategorias()
+    procesarReporte()
+  }, [dataChart.labels[0], mes])
+
+  const callApiListarCategorias = async () => {
+    const { categories } = await listarCategorias()
+    setCategorias(categories)
+  }
 
   const procesarReporte = async (e) => {
     e?.preventDefault()
@@ -84,12 +97,14 @@ const PlatosMasVendidos = () => {
   return (
     <div style={{ marginTop: 30 }}>
       <form style={{ width: 700, margin: 'auto' }}>
-        <label>
-          Selecciona mes:
+        <select>
+          {categorias.map(categoria => <option value={categoria.code}>{categoria.name}</option>)}
+        </select>
+
           <LocalizationProvider dateAdapter={AdapterDayjs} >
             <DatePicker
               views={['year', 'month']}
-              // label='Year and Month'
+              label='Seleccione mes y año'
               minDate={dayjs('2012-03-01')}
               maxDate={dayjs('2030-06-01')}
               value={date}
@@ -99,7 +114,6 @@ const PlatosMasVendidos = () => {
               renderInput={(params) => <TextField {...params} helperText={null} />}
             />
           </LocalizationProvider>
-        </label>
 
         <input
           type='submit'
@@ -109,7 +123,7 @@ const PlatosMasVendidos = () => {
         />
       </form>
 
-      <div style={{ width: 700, margin: 'auto' }}>
+      <div style={{ width: 700, margin: 'auto', marginTop: 30 }}>
         <PieChart chartData={dataChart} title={`Platos más vendidos en el mes ${mes}`} />
       </div>
     </div>

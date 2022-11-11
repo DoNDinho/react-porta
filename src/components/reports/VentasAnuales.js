@@ -74,11 +74,10 @@ const GananciasAnuales = () => {
   return (
     <div style={{ marginTop: 30 }}>
       <form style={{ width: 700, margin: 'auto' }}>
-        <label>
-          Selecciona año:
           <LocalizationProvider dateAdapter={AdapterDayjs} >
             <DatePicker
                 views={['year']}
+                label='Seleccione año'
                 value={date}
                 onChange={(newValue) => {
                   setDate(newValue.format('YYYY-MM-DD'))
@@ -86,7 +85,6 @@ const GananciasAnuales = () => {
                 renderInput={(params) => <TextField {...params} helperText={null} />}
               />
           </LocalizationProvider>
-        </label>
 
         <input
           type='submit'
@@ -96,7 +94,7 @@ const GananciasAnuales = () => {
         />
       </form>
 
-      <div style={{ width: 700, margin: 'auto' }}>
+      <div style={{ width: 700, margin: 'auto', marginTop: 30 }}>
         <LineChart chartData={dataChart} title={`Total ventas anuales $${totalAnual}`} />
       </div>
     </div>
