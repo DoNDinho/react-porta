@@ -1,6 +1,6 @@
 import React from 'react'
-import { PieChart } from './reports/PieChart'
 import PlatosMasVendidos from './reports/PlatosMasVendidos'
+import PlatosMenosVendidos from './reports/PlatosMenosVendidos'
 import VentasAnuales from './reports/VentasAnuales'
 import VentasMensuales from './reports/VentasMensuales'
 
@@ -15,6 +15,9 @@ const Report = () => {
       <hr />
       <hr />
       <PlatosMasVendidos />
+
+      <hr />
+      <PlatosMenosVendidos />
     </div>
   )
 }
