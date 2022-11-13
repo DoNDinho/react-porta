@@ -97,7 +97,7 @@ const GananciasMensuales = () => {
       </form>
 
       <div style={{ width: 700, margin: 'auto', marginTop: 30 }}>
-        <LineChart chartData={dataChart} title={`Total ventas mensual $${totalMensual}`} />
+        <LineChart chartData={dataChart} title={`Total ventas mensual $${totalMensual.toLocaleString('es-CL')}`} />
       </div>
     </div>
   )
