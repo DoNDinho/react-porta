@@ -43,7 +43,7 @@ const PromedioPreparacionPlatos = () => {
   useEffect(() => {
     callApiListarCategorias()
     procesarReporte()
-  }, [ dataChart.labels[0], dataChart.labels[1], idCategoria ])
+  }, [ dataChart.labels[0], dataChart.labels[1], idCategoria, date ])
 
   const callApiListarCategorias = async () => {
     const { categories } = await listarCategorias()
