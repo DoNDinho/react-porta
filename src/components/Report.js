@@ -3,6 +3,7 @@ import PlatosMasVendidos from './reports/PlatosMasVendidos'
 import PlatosMenosVendidos from './reports/PlatosMenosVendidos'
 import VentasAnuales from './reports/VentasAnuales'
 import VentasMensuales from './reports/VentasMensuales'
+import PromedioPreparacionPlatos from './reports/PromedioPreparacionPlatos'
 
 const Report = () => {
  
@@ -18,6 +19,9 @@ const Report = () => {
 
       <hr />
       <PlatosMenosVendidos />
+
+      <hr />
+      <PromedioPreparacionPlatos />
     </div>
   )
 }
