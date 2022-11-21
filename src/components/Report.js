@@ -4,6 +4,7 @@ import PlatosMenosVendidos from './reports/PlatosMenosVendidos'
 import VentasAnuales from './reports/VentasAnuales'
 import VentasMensuales from './reports/VentasMensuales'
 import PromedioPreparacionPlatos from './reports/PromedioPreparacionPlatos'
+import PlatosVendidosCategoria from './reports/PlatosVendidosCategoria'
 
 const Report = () => {
  
@@ -14,14 +15,17 @@ const Report = () => {
       <VentasMensuales/>
 
       <hr />
-      <hr />
       <PlatosMasVendidos />
 
       <hr />
       <PlatosMenosVendidos />
 
+
+      <hr />
       <hr />
       <PromedioPreparacionPlatos />
+      <hr />
+      <PlatosVendidosCategoria />
     </div>
   )
 }

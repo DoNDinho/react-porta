@@ -19,20 +19,9 @@ ChartJS.register(
   Legend
 );
 
-
-function HorizontalBarChart({ chartData, title }) {
+export function StackedBarChart({ chartData, title }) {
   const options = {
-    indexAxis: 'y',
-    elements: {
-      bar: {
-        borderWidth: 2,
-      },
-    },
-    responsive: true,
     plugins: {
-      legend: {
-        position: 'right',
-      },
       title: {
         display: true,
         text: title,
@@ -44,9 +33,16 @@ function HorizontalBarChart({ chartData, title }) {
         }
       }
     },
+    responsive: true,
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true,
+      },
+    },
   }
 
   return <Bar options={options} data={chartData} />;
 }
-
-export default HorizontalBarChart
